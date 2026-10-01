@@ -1,6 +1,6 @@
 # Produkcja gildii — Heroes of History
 
-**Autor: Marek „Zenmar”** — https://github.com/mzenft2 · © 2026. Wszelkie prawa zastrzeżone.
+**Autor: Marek Zenft** · kontakt: [Discord](https://discord.com/users/1054364881089994782) · https://github.com/mzenft2 · © 2026. Wszelkie prawa zastrzeżone.
 
 Zestawienia produkcji miast graczy, liczone wewnątrz epoki (jedzenie, towary, złoto w jednej walucie, pola puste, braki pracowników):
 
