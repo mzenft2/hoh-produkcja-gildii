@@ -1,0 +1,656 @@
+<title>Produkcja Watahy Wilków</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@600;700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ziemia:#edebe6; --plyta:#f8f7f4; --plyta2:#e4e1da;
+  --tekst:#1a1c1a; --cichy:#6a6d68; --kreska:#d3cfc6;
+  --wataha:#a8332a;
+  --k-adm:#7a6a55; --k-kosz:#a8332a; --k-wsz:#2f6d85; --k-wszs:#7fa8b8;
+  --k-farm:#5f7f2e; --k-dom:#c19a3e; --k-kult:#8f6f9e; --k-wolne:#00000010;
+  --jedz:#5f7f2e; --towar:#2f6d85; --diax:#7a4f9e; --wynik:#8a5a1e;
+  --jedz-tlo:#5f7f2e26; --towar-tlo:#2f6d8526; --wynik-tlo:#8a5a1e26; --kult-tlo:#8f6f9e26;
+  --cien:0 1px 2px #1a1c1a12;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ziemia:#14161a; --plyta:#1c1f24; --plyta2:#252a31;
+    --tekst:#e6e4de; --cichy:#9296a0; --kreska:#333942;
+    --wataha:#d9584c;
+    --k-adm:#a8977e; --k-kosz:#d9584c; --k-wsz:#6fb4cd; --k-wszs:#3f6f80;
+    --k-farm:#a3c265; --k-dom:#dcaf4d; --k-kult:#b58ede; --k-wolne:#ffffff12;
+    --jedz:#a3c265; --towar:#6fb4cd; --diax:#b58ede; --wynik:#e0a860;
+    --jedz-tlo:#a3c26526; --towar-tlo:#6fb4cd26; --wynik-tlo:#e0a86026; --kult-tlo:#b58ede26;
+    --cien:0 1px 2px #00000045;
+  }
+}
+:root[data-theme="dark"]{
+  --ziemia:#14161a; --plyta:#1c1f24; --plyta2:#252a31;
+  --tekst:#e6e4de; --cichy:#9296a0; --kreska:#333942;
+  --wataha:#d9584c;
+  --k-adm:#a8977e; --k-kosz:#d9584c; --k-wsz:#6fb4cd; --k-wszs:#3f6f80;
+  --k-farm:#a3c265; --k-dom:#dcaf4d; --k-kult:#b58ede; --k-wolne:#ffffff12;
+  --jedz:#a3c265; --towar:#6fb4cd; --diax:#b58ede; --wynik:#e0a860;
+  --jedz-tlo:#a3c26526; --towar-tlo:#6fb4cd26; --wynik-tlo:#e0a86026; --kult-tlo:#b58ede26;
+  --cien:0 1px 2px #00000045;
+}
+*{box-sizing:border-box}
+html{overflow-x:hidden}
+body{margin:0; background:var(--ziemia); color:var(--tekst);
+  font:400 16px/1.55 "Source Sans 3",system-ui,sans-serif; -webkit-font-smoothing:antialiased}
+.strona{max-width:1240px; margin:0 auto; padding:32px 20px 72px; display:flex; flex-direction:column; gap:40px}
+
+.szyld{display:flex; flex-direction:column; gap:14px}
+.szyld .pas{width:56px; height:4px; background:var(--wataha)}
+h1{font:700 40px/1.05 Bitter,Georgia,serif; margin:0; letter-spacing:-.015em; text-wrap:balance}
+.podtytul{margin:0; color:var(--cichy); max-width:66ch}
+.podtytul b{color:var(--tekst); font-weight:600}
+.metryki{display:flex; flex-wrap:wrap; gap:30px; margin-top:8px}
+.metryka{display:flex; flex-direction:column; gap:2px}
+.metryka b{font:500 26px/1 "IBM Plex Mono",monospace; font-variant-numeric:tabular-nums}
+.metryka span{font-size:12px; text-transform:uppercase; letter-spacing:.09em; color:var(--cichy)}
+
+section{display:flex; flex-direction:column; gap:16px}
+h2{font:600 13px/1 "IBM Plex Mono",monospace; text-transform:uppercase; letter-spacing:.12em;
+   color:var(--cichy); margin:0; padding-bottom:9px; border-bottom:1px solid var(--kreska)}
+.wstep{margin:0; color:var(--cichy); max-width:72ch; font-size:15px}
+.wstep b{color:var(--tekst); font-weight:600}
+
+.kolejnosc{display:flex; flex-wrap:wrap; gap:0; background:var(--plyta);
+  border:1px solid var(--kreska); box-shadow:var(--cien)}
+.krok{flex:1 1 148px; padding:14px 16px; border-right:1px solid var(--kreska); min-width:148px}
+.krok:last-child{border-right:none}
+.krok b{display:block; font:700 15px/1.3 Bitter,Georgia,serif; margin-bottom:3px}
+.krok span{font-size:13px; color:var(--cichy); line-height:1.4; display:block}
+.krok i{display:block; width:20px; height:3px; margin-bottom:9px}
+
+.legenda{display:flex; flex-wrap:wrap; gap:6px 18px; font-size:13px; color:var(--cichy)}
+.legenda span{display:flex; align-items:center; gap:6px; white-space:nowrap}
+.legenda i{width:11px; height:11px; display:inline-block}
+
+.klucz{display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:0;
+  background:var(--plyta); border:1px solid var(--kreska); box-shadow:var(--cien)}
+.klucz div{padding:14px 16px; border-right:1px solid var(--kreska)}
+.klucz div:last-child{border-right:none}
+.klucz b{display:block; font:700 15px/1.3 Bitter,Georgia,serif; margin-bottom:4px}
+.klucz b.w{color:var(--wynik)} .klucz b.k{color:var(--k-kult)} .klucz b.z{color:var(--wataha)}
+.klucz span{font-size:13.5px; color:var(--cichy); line-height:1.45; display:block}
+
+.widoki{display:flex; flex-wrap:wrap; gap:6px; margin:10px 0 2px}
+.widoki button{font:400 13px/1 "Source Sans 3",sans-serif; color:var(--cichy); cursor:pointer;
+  background:none; border:1px solid var(--kreska); padding:6px 12px; border-radius:2px;
+  transition:color .12s, background .12s}
+.widoki button:hover{color:var(--tekst)}
+.widoki button[aria-pressed="true"]{background:var(--tekst); border-color:var(--tekst);
+  color:var(--ziemia); font-weight:600}
+.widoki button:focus-visible{outline:2px solid var(--wataha); outline-offset:2px}
+.epoka-glowa{display:flex; align-items:baseline; justify-content:space-between; gap:16px;
+  padding-bottom:8px; border-bottom:2px solid var(--tekst)}
+.epoka-glowa h3{font:700 21px/1.2 Bitter,Georgia,serif; margin:0}
+.epoka-glowa em{font-style:normal; font-size:13px; color:var(--cichy); font-family:"IBM Plex Mono",monospace}
+/* blok epoki wychodzi poza wąską kolumnę tekstu na pełną szerokość okna */
+.epoka{margin-inline:calc(-50vw + 50%); padding-inline:20px}
+.epoka > *{max-width:1600px; margin-inline:auto}
+.przewin{overflow-x:auto; scrollbar-width:thin}
+table{border-collapse:collapse; width:100%; min-width:1080px; font-variant-numeric:tabular-nums}
+th{font:500 11px/1.25 "IBM Plex Mono",monospace; text-transform:uppercase; letter-spacing:.06em;
+   color:var(--cichy); text-align:right; padding:11px 7px 8px; vertical-align:bottom}
+th[data-k]{cursor:pointer; user-select:none; position:relative; padding-right:15px;
+  transition:color .12s}
+th[data-k]:hover{color:var(--tekst)}
+th[data-k]:focus-visible{outline:2px solid var(--wataha); outline-offset:-2px}
+th[data-k]::after{content:"⇅"; position:absolute; right:3px; bottom:8px;
+  font-size:10px; opacity:.28; letter-spacing:0}
+th[data-k].akt{color:var(--tekst)}
+th[data-k].akt::after{opacity:.9; color:var(--wataha)}
+th[data-k][data-kier="dol"]::after{content:"▼"; font-size:8px; bottom:9px}
+th[data-k][data-kier="gora"]::after{content:"▲"; font-size:8px; bottom:9px}
+th:first-child,td:first-child,th:nth-child(2),td:nth-child(2){text-align:left}
+td{padding:7px 6px; border-top:1px solid var(--kreska); font-size:15px; text-align:right}
+tbody tr:hover{background:var(--plyta)}
+.nick{font-weight:600; white-space:nowrap}
+.klub{font-size:12px; color:var(--cichy); font-family:"IBM Plex Mono",monospace; white-space:nowrap}
+.liczba{font-family:"IBM Plex Mono",monospace; font-size:14px; white-space:nowrap}
+.j{color:var(--jedz); font-weight:500}
+.t{color:var(--towar); font-weight:500}
+.w{color:var(--wynik); font-weight:600}
+.slupek{position:relative}
+.slupek i{position:absolute; left:0; top:3px; bottom:3px; z-index:0}
+.slupek span{position:relative; z-index:1; padding-right:3px}
+.s-jedz{min-width:112px} .s-towar{min-width:82px} .s-wynik{min-width:88px}
+.odch{font-family:"IBM Plex Mono",monospace; font-size:12px; width:48px}
+.plus{color:var(--jedz)} .minus{color:var(--wataha)} .szary{color:var(--cichy)}
+.norma-ok{color:var(--jedz)} .norma-zle{color:var(--wataha)}
+
+.wsz{font-family:"IBM Plex Mono",monospace; font-size:14px; white-space:nowrap; letter-spacing:.5px}
+.wsz b{color:var(--k-wsz); font-weight:600}
+.wsz b.norma-ok{color:var(--jedz)} .wsz b.norma-zle{color:var(--wataha)}
+.wsz s{color:var(--k-wszs); text-decoration:none}
+.wsz u{color:var(--cichy); text-decoration:none}
+.wsz em{color:var(--kreska); font-style:normal; padding:0 1px}
+
+.mapa{display:flex; height:15px; min-width:132px; width:132px; border:1px solid var(--kreska);
+  background:var(--k-wolne); overflow:hidden}
+.mapa b{display:block; height:100%}
+td.mapa-td{padding:7px 8px}
+
+#alarm table{border-top:2px solid var(--wataha)}
+#alarm td{font-size:15px}
+.pusto{font-size:15px; color:var(--jedz); margin:0}
+.grupy{display:flex; flex-direction:column; gap:14px; max-width:680px}
+.zalegli{background:var(--plyta); border:1px solid var(--kreska);
+  border-left:3px solid var(--wataha); padding:14px 18px 16px}
+.grupa-glowa{display:flex; align-items:baseline; justify-content:space-between;
+  gap:12px; padding-bottom:7px; border-bottom:1px solid var(--kreska)}
+.grupa-glowa h3{font:700 19px/1.2 Bitter,Georgia,serif; margin:0}
+.grupa-glowa .suma{font:500 19px/1.2 "IBM Plex Mono",monospace; color:var(--wataha);
+  font-variant-numeric:tabular-nums; white-space:nowrap}
+.grupa-podpis{margin:6px 0 0; font-size:12.5px; color:var(--cichy); font-family:"IBM Plex Mono",monospace}
+.grupa-podpis b{color:var(--tekst); font-weight:500}
+.dziury-lista{list-style:none; margin:10px 0 0; padding:0; display:flex; flex-direction:column; gap:1px}
+.dziury-lista li{display:grid; grid-template-columns:minmax(84px,auto) 1fr 92px;
+  align-items:center; gap:10px; padding:3px 0}
+.dziury-lista .kto{font-size:14px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.dziury-lista .tor{height:14px; background:var(--k-wolne); position:relative}
+.dziury-lista .tor b{display:block; height:100%; background:var(--wataha); opacity:.72}
+.dziury-lista .ile{font-family:"IBM Plex Mono",monospace; font-size:13px;
+  text-align:right; white-space:nowrap; font-variant-numeric:tabular-nums}
+.dziury-lista .ile em{font-style:normal; color:var(--cichy); font-size:12px}
+.czysto{margin:9px 0 0; font-size:14px; color:var(--jedz)}
+
+footer{color:var(--cichy); font-size:13px; border-top:1px solid var(--kreska); padding-top:16px; max-width:80ch}
+footer code{font-family:"IBM Plex Mono",monospace; font-size:12px; background:var(--plyta2); padding:1px 5px}
+@media (max-width:640px){
+  h1{font-size:30px} .strona{padding:24px 14px 56px} .epoka{padding-inline:14px}
+}
+</style>
+
+<div class="strona">
+
+  <header class="szyld">
+    <div class="pas"></div>
+    <h1>Produkcja Watahy Wilków</h1>
+    <p class="podtytul">Miasto ma tyle pól, ile ma — i każde oddane pod koszary czy warsztat
+      to pole nieoddane farmie. <b>Dobrze zagrane miasto jest zapchane pod korek</b>: puste pole
+      nie produkuje niczego. Wszystko liczone wewnątrz epoki, ze stanu miast na dziś.</p>
+    <div class="metryki">
+      <div class="metryka"><b>120</b><span>graczy w Watasze Wilków 1–6</span></div>
+      <div class="metryka"><b id="m-zero">—</b><span>miast zapchanych do zera</span></div>
+      <div class="metryka"><b id="m-dziury" class="minus">—</b><span>z dziurą ponad 50 pól</span></div>
+      <div class="metryka"><b id="m-strata" class="minus">—</b><span>pól odłogiem w gildii</span></div>
+      <div class="metryka"><b id="m-prac" class="minus">—</b><span>bez kompletu pracowników</span></div>
+    </div>
+  </header>
+
+  <section>
+    <h2>Kolejność, w jakiej zapełnia się miasto</h2>
+    <div class="kolejnosc">
+      <div class="krok"><i style="background:var(--k-adm)"></i><b>Administracja</b>
+        <span>Ratusz, akademia, piec, szkoła. Część musi być, część nie.</span></div>
+      <div class="krok"><i style="background:var(--k-kosz)"></i><b>Koszary</b>
+        <span>Stały koszt — 106 pól u każdego w gildii, bez wyjątku.</span></div>
+      <div class="krok"><i style="background:var(--k-wsz)"></i><b>Warsztaty bieżące</b>
+        <span>Norma: 9 sztuk. Sześć, jeśli epoki się skończyły.</span></div>
+      <div class="krok"><i style="background:var(--k-dom)"></i><b>Domy</b>
+        <span>Dają pracowników do farm i warsztatów, a przy okazji złoto. Bez nich reszta stoi.</span></div>
+      <div class="krok"><i style="background:var(--k-farm)"></i><b>Farmy</b>
+        <span>Cała reszta miejsca. Do oporu — aż nie zostanie ani jedno wolne pole.</span></div>
+    </div>
+    <p class="wstep" style="margin-top:2px"><span class="wsz"><s>■</s></span>
+      <b>Stare warsztaty</b> — z wcześniejszych epok, przepalane na iskry do ekwipunku — stoją poza tą
+      kolejką. Ile ich trzymać, to osobna decyzja; nie wchodzą w miejsce farm.
+      Warto wiedzieć, że <b>warsztat nowej epoki produkuje dokładnie tyle samo, co stary</b>:
+      zadowolony 60 towarów na godzinę, bez względu na to, z której epoki pochodzi.
+      Zyskują tylko farmy — i dlatego im wyższa epoka, tym drożej kosztuje pole oddane
+      pod warsztat.</p>
+    <div class="legenda" style="margin-top:2px">
+      <span>Na paskach niżej dochodzi jeszcze:</span>
+      <span><i style="background:var(--k-kult)"></i>kultura</span>
+      <span><i style="background:var(--k-wolne);border:1px solid var(--kreska)"></i>pole puste</span>
+    </div>
+    <p class="wstep" style="margin-top:2px"><b>Złoto</b> wchodzi do wyniku przez iskry, ale waży niewiele — bo w praktyce ma się go
+      nadmiar, a i tak nikt w gildii nie przepala dziennego limitu do końca. To zasób, którego się nie zbiera, tylko wymienia.</p>
+  </section>
+
+  <section>
+    <h2>Trzy kolumny, które trzeba umieć czytać</h2>
+    <div class="klucz">
+      <div><b class="w">Wynik dobowy — wszystko w jednej walucie</b>
+        <span>Ile miasto daje przez dobę, licząc jedzenie, towary i złoto razem, w przeliczeniu
+          na jedzenie. Kolumna <b>±</b> obok mówi, o ile to więcej albo mniej niż u przeciętnego
+          gracza tej samej epoki. Jedna liczba na całą produkcję — nie da się jej podbić
+          jednym zasobem kosztem reszty.</span></div>
+      <div><b class="z">Zbiór jedzenia — ile naprawdę zbierzesz</b>
+        <span>Gra pokazuje produkcję tak, jakby ktoś odbierał całą dobę. Gospodarstwa wiejskie
+          dojrzewają co 3 godziny, więc przy normalnym spaniu odbiera się je jakieś 18 godzin
+          na dobę. Domowe i luksusowe dojrzewają co 6 godzin i praktycznie nic się na nich
+          nie marnuje — liczę im 22,5 godziny. Kto siedzi na samych wiejskich, traci ćwierć zbioru.</span></div>
+      <div><b class="k">Towary i złoto — po kursie pola i iskier</b>
+        <span>Warsztat zajmuje 12 pól, tyle co gospodarstwo wiejskie, i zadowolony daje
+          60 towarów na godzinę — trzydzieści razy dwa. Stąd kurs towaru: tyle jedzenia,
+          ile dałaby farma z tego samego kawałka ziemi (181 w gotyku, 128 w średniowieczu,
+          59 w feudalnej). Złoto wchodzi przez iskry: 84 000 złota to 170 iskier,
+          a 70 towarów to 95 iskier, więc jeden towar wart jest 671 złota. Tą samą drogą
+          złoto ląduje w jedzeniu — i wychodzi na to, czym jest: zasobem, którego się
+          nie zbiera, tylko wymienia.</span></div>
+      <div><b class="k">Bez diamentów — ile z tego ugrał, a ile kupił</b>
+        <span><b>Pierwsze siedem ekspansji jest darmowe</b> — jakieś cztery tysiące diamentów
+          da się uzbierać w samej grze, więc to standard, nie inwestycja. Odejmuję dopiero pola
+          ponad ten próg. Budynki luksusowe liczę <b>różnicą</b>, nie całością: gdyby ich nie było,
+          stałyby tam zwykłe, które też produkują. Farma luksusowa jest warta 12 pól zwykłej
+          zabudowy ponad swoją powierzchnię, dom 4, miejsce kultury 3.
+          To nie jest zarzut wobec nikogo — chodzi o to, żeby dało się porównać dwa sposoby
+          grania, zamiast udawać, że wszyscy startowali z tego samego miejsca.</span></div>
+      <div><b class="z">Limit palenia — kiedy zaczyna uwierać</b>
+        <span>Na iskry można przerobić 7 000 towarów dziennie. Ale to sufit, o który obija się
+          dopiero ten, kto ma już wszystkie budynki i badania na maksa i czeka na aktualizację gry.
+          Wcześniej towary mają gdzie iść — w badania i w ulepszanie. Dlatego ta kolumna niczego
+          nie ocenia: mówi tylko, na jakim etapie jest miasto. Złoto ma osobny limit 8,4 miliona dziennie i tu czołówka zaczyna go już dotykać:
+          sześciu graczy siedzi powyżej 70 procent, najwyżej 81. Reszcie zostaje zapas.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Tabele według epok</h2>
+    <p class="wstep">Nad każdą tabelą są <b>zakładki</b>: „Wszystko” pokazuje pełen komplet,
+      „Produkcja” zawęża do jedzenia, towarów i złota, „Budowa miasta” do tego, z czego miasto
+      jest zbudowane. Wynik, sojusz i pasek zostają zawsze.
+      <b>Kliknij nagłówek, żeby posortować</b> — drugi klik odwraca kolejność.
+      Każda epoka sortuje się osobno. Domyślnie po Wyniku dobowym. <b>Miasto</b> to pasek
+      zajętości w kolejności z góry. <b>Warsztaty</b> czyta się jako trzy pokolenia:
+      <span class="wsz"><b>bieżąca epoka</b><em>·</em><s>do trzech wstecz</s><em>·</em><u>pradawne</u></span> —
+      pierwsza liczba zielenieje przy normie. <b>Puste</b> zielenieje przy zerze.
+      <b>Najedź myszą na dowolną liczbę</b> — pod każdą kryje się rozpisany rachunek, z którego
+      wyszła. <b>Dokupione</b> to pola kupione za diamenty, po 16 kratek za zamach — a cena rośnie
+      z każdym zakupem: pierwsze 16 pól kosztuje 190 diamentów, dziesiąte już 2 500,
+      a przy kilkunastu dokupionych trzeba odłożyć jakieś <b>4–5 tysięcy diamentów za kolejne
+      szesnaście kratek</b>. Najedź na liczbę, żeby zobaczyć, ile kosztuje następne pole.</p>
+    <div id="epoki" style="display:flex; flex-direction:column; gap:36px"></div>
+  </section>
+
+  <section>
+    <h2>Dziury w miastach</h2>
+    <p class="wstep">Zapchane miasto to stan docelowy, więc pusta przestrzeń jest po prostu
+      produkcją, której nie ma. Sojusz po sojuszu, wszyscy z dziurą ponad 30 pól — od największej,
+      z przelicznikiem na gospodarstwa wiejskie po 12 pól. Przy nazwie sojuszu stoi jego łączna strata.</p>
+    <p class="wstep"><b>Czym jest puste pole:</b> to kratka, na której nic nie stoi — różnica między
+      pojemnością miasta a sumą wszystkich budynków, dokładnie tak, jak liczy to zakładka „Obszar”
+      w podglądzie miasta. Kilkanaście takich kratek potrafi być rozsypanych po jednej,
+      w szczelinach między budynkami; wtedy faktycznie niczego się tam nie wciśnie, choć nadal
+      nic nie produkują. Dopiero kilkadziesiąt pól to realne miejsce na farmy.</p>
+    <div class="grupy" id="dziury"></div>
+  </section>
+
+  <section>
+    <h2>Brakuje pracowników — budynki stoją</h2>
+    <p class="wstep">Farmy i warsztaty potrzebują ludzi z domów. Kiedy pracowników brakuje,
+      część budynków po prostu <b>nie pracuje</b> — stoi, zajmuje pola i nie daje nic.
+      To poważniejszy błąd niż puste pole, bo tam przynajmniej nic nie stoi.
+      Naprawa jest prosta: dostawić domy albo zdjąć nadmiarowy budynek.</p>
+    <div class="przewin" id="alarm" style="max-width:620px"></div>
+  </section>
+
+  <footer>
+    Stan miast na 3 września 2026, prosto z bieżącego zapisu na forgeofgames.com.
+    Sojusze <code>Wataha Wilków · 2 · 3 · 4 · 5 · 6</code>, wszystkich 120 członków —
+    każdemu udało się zdjąć komplet liczb, nikt nie wypadł z zestawienia.
+    Towary to suma surowców warsztatowych bez podziału na nowe i stare — warsztat ma przełącznik
+    produktu, więc strona nie mówi, co z czego wyszło. Liczby kultury pochodzą wprost
+    z zakładki „Kultura” w podglądzie miasta.
+    Zbiór jedzenia to szacunek: wiejskie liczone po 18 h odbioru na dobę, domowe i luksusowe
+    po 22,5 h. Wydajność typów farm wyliczona z produkcji całej epoki
+    (wiejska ≈ 11 300/h, domowa ≈ 13 000/h, luksusowa ≈ 20 000/h przy poziomie 38–39).
+    Kursy iskier zdjęte wprost z ekranu konwersji: 84 000 złota → 170 iskier, 70 towarów → 95 iskier.
+    Godziny odbioru luksusowych przyjęte jak dla domowych — to jedyne miejsce, gdzie zgaduję.
+  </footer>
+</div>
+
+<script>
+// [klub,nick,epoka,pkt, jedzenie,złoto,towary, pojemność,zakupy,
+//  farmy,warsztBież,doTrzech,pradawne, puste, powAdm,powKosz,powFarm,powDom,powKult,
+//  kulturaWykorzystanie, kulturaZmarnowane%]
+const D=[
+["Wataha Wilków","Zaha98","EG",1977443,341425,284993,480,1152,16,25,8,0,0,1,92,106,331,400,126,8,5],
+["Wataha Wilków","BLACK ADAM","EG",1528179,342943,280984,660,1184,18,26,9,3,0,2,92,106,331,380,129,6.84,13],
+["Wataha Wilków","TRACZ52","EG",1474013,347102,277528,540,1184,18,23,9,0,0,0,70,106,343,410,147,6.37,18],
+["Wataha Wilków 2","Willow","EG",1351629,243973,262410,540,1184,18,19,9,0,0,18,124,106,223,412,193,6.1,31],
+["Wataha Wilków","Marty","EG",1325915,328461,180853,160,1104,13,23,3,1,0,7,86,106,323,377,157,4.78,69],
+["Wataha Wilków","Algmin","EG",1298096,300310,227755,360,1056,10,24,6,0,0,6,92,106,283,357,140,7.32,45],
+["Wataha Wilków 2","Milagros","EG",1210610,379981,275777,360,1184,18,31,6,0,0,3,108,106,367,354,174,6,0],
+["Wataha Wilków 3","MortusPL","EG",1209613,191192,253302,540,1008,7,13,9,0,0,6,92,106,182,374,140,7.83,15],
+["Wataha Wilków","lysy0806","EG",1204338,222417,180966,360,992,6,18,6,0,0,17,92,106,225,334,146,5.15,65],
+["Wataha Wilków","G0RZK1","EG",1183017,353600,217907,180,1088,12,29,3,0,0,13,86,106,343,310,194,7.15,3],
+["Wataha Wilków","Argen","EG",1182603,257061,213911,360,1056,10,19,3,3,0,3,92,106,239,341,203,5.69,2],
+["Wataha Wilków","SevoPl","EG",1180062,248624,204252,360,1024,8,20,6,0,0,5,76,106,264,364,137,6.29,64],
+["Wataha Wilków","Anka","EG",1176468,232500,225856,420,1008,7,18,4,3,0,9,76,106,248,356,129,8.63,41],
+["Wataha Wilków 2","nowyM","EG",1171049,230800,219281,458,1024,8,17,8,0,0,9,86,106,226,374,127,8.21,34],
+["Wataha Wilków","itzDK","EG",1167808,300310,217178,360,1056,10,24,6,0,0,7,92,106,283,352,144,6.85,51],
+["Wataha Wilków 4","Marco","EG",1154046,214861,235962,357,1008,7,16,4,0,3,9,83,106,232,357,137,7.73,31],
+["Wataha Wilków","Kapo","EG",1153082,198017,187849,536,1024,8,17,4,5,0,8,92,106,232,376,102,7.14,83],
+["Wataha Wilków 4","Ursusek","EG",1144963,221936,171819,480,1024,8,16,3,0,5,16,86,106,240,352,128,5.27,70],
+["Wataha Wilków","Cysia","EG",1125016,300643,224380,360,1056,10,24,6,0,0,3,92,106,283,361,139,7.2,54],
+["Wataha Wilków","lukasso87","EG",1122577,255543,235084,360,1040,9,18,6,0,0,3,88,106,239,384,148,6.54,53],
+["Wataha Wilków 4","Rado90","EG",1094703,220071,164940,180,992,6,17,5,0,0,24,92,106,256,328,126,5.41,70],
+["Wataha Wilków","Jamesgrucha","EG",1071861,337917,200032,180,1040,9,27,3,0,0,7,86,106,323,357,125,6.85,66],
+["Wataha Wilków 3","dzikus1000","EG",1065585,162669,142962,551,1024,9,13,9,2,0,79,61,106,173,372,101,3.45,95],
+["Wataha Wilków",".RaV.","EG",1056473,191954,166543,360,928,2,15,3,3,0,6,92,106,204,300,148,5.54,54],
+["Wataha Wilków 3","Leoss","EG",1055212,308705,203344,480,1040,9,25,5,3,0,0,86,106,291,361,100,7.59,75],
+["Wataha Wilków","Jastin","EG",1049287,187164,236420,575,1072,12,14,9,1,0,15,92,106,200,370,169,6.27,41],
+["Wataha Wilków 3","Miro","EG",1047152,174646,164695,411,1008,7,14,10,0,0,38,77,106,200,384,83,5.82,94],
+["Wataha Wilków 4","Wilku","EG",1044970,209309,155794,480,1040,9,15,6,3,0,0,86,106,236,412,92,4.65,88],
+["Wataha Wilków","Pepsola","EG",1037338,222493,175930,510,1008,7,17,5,3,1,4,86,106,214,360,130,6.54,61],
+["Wataha Wilków 5","Gurek","EG",1036900,187474,131399,329,944,3,15,6,2,0,31,77,106,208,345,81,4.12,90],
+["Wataha Wilków 5","aras","EG",1021580,220138,207830,360,1024,8,18,6,0,0,6,61,106,252,339,188,5.61,32],
+["Wataha Wilków 2","Daro","EG",1014523,261590,180311,360,1024,8,23,3,3,0,6,92,106,276,323,149,6.18,54],
+["Wataha Wilków 4","Krzychu79","EG",1009633,209596,217646,540,1024,8,18,6,3,0,7,83,106,220,354,146,6.73,42],
+["Wataha Wilków 4","ALASLIT","EG",1009504,209499,180614,480,1008,7,16,8,0,0,11,92,106,224,355,124,6.33,63],
+["Wataha Wilków","Alaker","EG",1007817,227014,137495,480,1024,8,18,5,3,0,5,76,106,244,360,137,3.54,82],
+["Wataha Wilków 4","Byfor","EG",1005210,209832,131729,459,1008,7,16,4,3,1,2,83,106,224,353,144,4.39,74],
+["Wataha Wilków","Kozi","EG",994273,247577,135397,360,1008,7,20,6,0,0,31,86,106,243,330,140,4.4,83],
+["Wataha Wilków 6","Andre","EG",989012,148040,157926,486,1008,8,15,5,4,0,5,92,106,212,391,94,5.78,89],
+["Wataha Wilków 4","moral","EG",981278,209583,169872,420,992,7,16,3,4,0,3,77,106,248,368,106,5.6,86],
+["Wataha Wilków 4","grzesio","EG",978855,153031,151989,482,1024,9,17,4,6,0,25,63,106,235,403,72,3.5,94],
+["Wataha Wilków 3","Marco Polo","EG",978139,171091,184788,480,992,7,14,3,6,0,4,73,106,192,308,201,5.58,12],
+["Wataha Wilków 3","kuku","EG",976427,163247,194487,433,928,2,13,4,4,0,0,76,106,180,335,135,5.51,57],
+["Wataha Wilków 2","Ludwik","EG",970116,143151,194767,504,1024,8,14,9,0,0,17,92,106,204,369,128,5.11,73],
+["Wataha Wilków 2","Francesca","EG",957182,172463,132053,357,896,1,13,6,0,0,45,92,106,188,294,99,5.26,74],
+["Wataha Wilków 5","Kuba","EG",954888,115781,128546,405,1008,8,15,0,10,0,20,92,106,204,394,72,4.94,91],
+["Wataha Wilków 2","missU","EG",944361,209893,196909,526,1040,9,16,4,5,0,5,86,106,207,360,168,5.48,69],
+["Wataha Wilków 3","Internet","EG",944059,219926,125418,418,1072,11,15,7,0,0,12,77,106,240,409,144,3.65,79],
+["Wataha Wilków 3","Just Gru","EG",936619,173130,179792,472,992,6,14,6,2,0,2,77,106,198,350,163,4.07,73],
+["Wataha Wilków 2","Mike","EG",926937,222351,213445,509,992,6,18,6,3,0,3,67,106,236,358,114,7.72,63],
+["Wataha Wilków 3","Glaurung","EG",923971,257320,157138,329,960,4,23,3,3,0,9,61,106,288,328,96,5.93,93],
+["Wataha Wilków 4","Baszczu1906","EG",923630,176646,142289,447,992,6,16,5,4,0,18,92,106,218,363,87,4.86,85],
+["Wataha Wilków 4","Player One","EG",900990,147887,173666,577,992,7,11,6,4,0,24,92,106,164,363,123,5.77,63],
+["Wataha Wilków 6","Jaker","EG",900021,159050,132304,360,912,2,14,3,3,0,20,70,106,196,320,128,4.36,81],
+["Wataha Wilków 2","mitras","EG",899552,211818,190716,360,1072,12,20,0,6,0,0,92,106,272,344,186,5.9,26],
+["Wataha Wilków 5","Air Hawk","EG",892737,135524,102251,466,992,7,12,2,7,0,19,72,106,192,371,124,5.3,74],
+["Wataha Wilków 5","Gisbern","EG",887850,225389,155308,356,1056,11,20,0,6,0,2,88,106,276,384,128,4.71,90],
+["Wataha Wilków 2","Visario","EG",883638,219524,207788,540,1056,10,17,3,6,0,16,86,106,215,357,168,6.68,30],
+["Wataha Wilków 4","Damian","EG",877886,174621,190652,540,912,1,14,6,3,0,8,92,106,162,331,105,7.41,51],
+["Wataha Wilków 3","Pajowka","EG",876580,201168,168162,330,1024,9,17,3,6,0,22,57,106,236,311,184,5.33,38],
+["Wataha Wilków 4","Nortal","EG",870185,243952,190916,346,1024,8,22,3,3,0,5,77,106,284,341,139,5.67,67],
+["Wataha Wilków 6","Szczupi","EG",865141,149144,139753,480,1008,8,12,3,5,0,61,86,106,188,377,94,5.8,92],
+["Wataha Wilków 6","Jakub de Medici","EG",863966,176448,142369,360,1024,9,18,0,6,0,28,86,106,240,315,177,4.09,62],
+["Wataha Wilków 3","Juily","EG",860295,218207,159353,540,960,4,15,6,3,0,5,70,106,199,363,109,5.27,84],
+["Wataha Wilków 3","pneumay","EG",856642,175038,208368,508,1040,9,15,8,2,0,4,61,106,208,361,180,4.86,49],
+["Wataha Wilków 2","Zbòjcerz","EG",848963,117339,192703,533,1008,8,14,6,3,0,7,83,106,200,374,130,5.89,72],
+["Wataha Wilków 3","łatka","EG",848751,179345,122262,438,1040,9,15,6,3,0,9,86,106,224,405,102,5.47,97],
+["Wataha Wilków 5","Beno","EG",847430,110737,186337,581,912,2,9,6,4,0,25,76,106,132,327,126,5.8,68],
+["Wataha Wilków 4","Raistlin","EG",846059,253730,198146,360,1024,8,23,6,0,0,17,70,106,292,340,127,6.24,72],
+["Wataha Wilków 3","macool","EG",839080,155891,160996,449,960,5,13,7,2,0,8,92,106,184,353,109,5.75,85],
+["Wataha Wilków 5","Ignis","EG",832442,202727,187542,360,1008,7,18,6,0,0,13,86,106,232,336,163,6.03,40],
+["Wataha Wilków 6","Jakubczyk","EG",815957,167374,120474,360,896,1,17,0,6,0,15,86,106,217,303,97,6.33,73],
+["Wataha Wilków 4","Hioo","EG",815135,104489,159746,521,880,0,9,3,6,0,4,92,106,124,288,158,5.36,30],
+["Wataha Wilków 3","MichalNBD","EG",813203,187655,158631,550,1024,9,17,3,8,0,11,70,106,220,386,99,5.47,87],
+["Wataha Wilków 2","Scarer","EG",802637,122109,167955,673,1024,9,15,6,6,0,19,92,106,196,394,73,6.15,95],
+["Wataha Wilków 3","Lucas","EG",761221,175866,86035,356,944,4,18,0,6,0,20,61,106,244,314,127,5.96,41],
+["Wataha Wilków 6","Aureliuss","EG",760699,215672,174611,540,1040,9,20,6,3,0,19,70,106,240,328,169,6.17,56],
+["Wataha Wilków 3","LordTomek","EG",734431,237675,140344,526,1040,9,22,6,1,2,2,86,106,264,345,129,6.6,50],
+["Wataha Wilków 2","major","EG",727781,107494,137852,390,912,2,11,3,6,0,9,92,106,148,268,181,4.76,16],
+["Wataha Wilków 5","Wulkix","EG",625236,91133,142849,623,1024,8,13,3,10,0,35,92,106,172,405,58,6.71,95],
+["Wataha Wilków 2","deBesciak","HMA",1003764,106714,94338,397,944,5,20,2,5,0,6,92,106,260,349,47,5.71,92],
+["Wataha Wilków 3","Nielo","HMA",981631,139300,138094,449,960,5,15,8,0,0,36,70,106,216,337,99,5.09,87],
+["Wataha Wilków 5","Lordi","HMA",938760,165390,144935,360,1024,9,15,6,0,0,31,92,106,187,296,240,3.05,46],
+["Wataha Wilków 4","LordLov","HMA",937670,134291,120975,360,896,1,14,6,0,0,2,92,106,188,283,153,3.66,69],
+["Wataha Wilków 5","Aizdoow","HMA",929955,166454,190333,539,1024,9,14,9,0,0,0,77,106,195,364,174,5.72,44],
+["Wataha Wilków 5","Iwan","HMA",911447,157290,144843,360,1024,9,15,6,0,0,19,83,106,220,344,180,4.88,49],
+["Wataha Wilków 3","Ghostring","HMA",885483,192983,147579,477,1040,9,23,8,0,0,32,77,106,276,332,121,6.28,80],
+["Wataha Wilków 2","M...","HMA",880953,215376,191873,360,1024,9,21,6,0,0,8,86,106,259,346,147,7.67,31],
+["Wataha Wilków 2","Rabarbar","HMA",861458,147915,125344,412,992,7,17,8,1,0,42,77,106,216,329,114,5.73,67],
+["Wataha Wilków 2","Tiktak","HMA",845521,131433,155199,540,1040,10,13,9,0,0,3,92,106,192,387,152,4.95,68],
+["Wataha Wilków 5","Pokemon","HMA",844478,150884,163562,360,976,7,16,6,0,0,23,92,106,212,300,171,7.72,17],
+["Wataha Wilków 5","Lordkoks","HMA",833507,147940,174275,540,1008,8,15,9,0,0,6,92,106,204,334,158,5.55,51],
+["Wataha Wilków 6","Candi","HMA",832045,152020,178339,540,1008,8,18,9,0,0,11,92,106,216,344,131,6.55,63],
+["Wataha Wilków 5","Piotr","HMA",829958,113283,118666,489,960,6,12,10,0,0,20,92,106,168,388,66,4.48,93],
+["Wataha Wilków 2","creeping death","HMA",820768,158835,98171,180,960,6,19,0,3,0,5,61,106,292,340,120,4.02,79],
+["Wataha Wilków 5","S0NG0KU","HMA",817595,170536,181462,537,1056,11,20,9,0,0,4,77,106,244,345,172,5.34,52],
+["Wataha Wilków 5","LoboAlien","HMA",810018,131864,94588,480,928,4,14,6,0,2,21,86,106,192,325,102,4.12,76],
+["Wataha Wilków 4","Bartosz 79","HMA",801917,127758,168098,360,960,5,14,6,0,0,3,92,106,192,313,182,6.03,6],
+["Wataha Wilków 2","Radoha","HMA",796096,185822,139740,360,992,7,20,6,0,0,7,73,106,272,348,114,5.8,81],
+["Wataha Wilków 2","ZnacieMnie","HMA",789256,134210,116810,508,976,6,16,4,5,0,18,76,106,208,360,100,5.19,79],
+["Wataha Wilków 6","Thalion","HMA",787367,156851,151834,480,976,6,16,8,0,0,24,92,106,213,334,111,6.41,62],
+["Wataha Wilków 4","Nenn","HMA",780265,107082,148770,536,944,5,12,9,0,0,16,73,106,164,342,135,4.96,58],
+["Wataha Wilków 6","NocnaFuria","HMA",767490,148123,171183,360,960,6,18,6,0,0,0,86,106,220,317,159,6,34],
+["Wataha Wilków 6","Damiano","HMA",761598,149083,169044,360,960,6,18,6,0,0,5,86,106,220,325,146,6.32,40],
+["Wataha Wilków 5","PMpepto","HMA",742811,98368,139347,360,896,2,11,0,8,0,16,92,106,172,308,106,6.7,64],
+["Wataha Wilków 4","Vexy","HMA",726392,130714,118142,360,912,2,15,6,0,0,2,92,106,192,282,166,4.26,59],
+["Wataha Wilków 5","Mati","HMA",725770,132031,117141,360,896,1,13,6,0,0,12,86,106,184,320,116,6.1,45],
+["Wataha Wilków 6","Rutrr","HMA",720312,121839,136885,540,1008,8,15,2,7,0,2,92,106,208,360,132,5.26,63],
+["Wataha Wilków 6","Krzyś","HMA",710152,135022,151597,540,944,5,13,9,0,0,4,79,106,181,355,111,6.38,68],
+["Wataha Wilków 6","KemezRP","HMA",709041,149359,194804,540,1040,10,13,9,0,0,25,92,106,179,360,170,6.78,15],
+["Wataha Wilków 6","Hoid","HMA",699122,129147,184603,522,1008,8,15,9,0,0,0,92,106,220,373,109,5.99,87],
+["Wataha Wilków 3","Arfael88","HMA",627439,133070,114472,540,992,7,15,9,0,0,24,57,106,212,359,126,4.52,90],
+["Wataha Wilków 6","Widelec","HMA",578446,147326,112700,360,912,3,14,3,3,0,2,73,106,224,358,77,4.83,91],
+["Wataha Wilków 6","Julianus","HMA",525141,55971,110584,690,960,5,9,3,10,3,0,70,106,108,441,43,5.13,100],
+["Wataha Wilków 4","nizit","KoS",839501,104607,129200,360,896,3,12,6,0,0,43,77,106,180,297,121,6.02,51],
+["Wataha Wilków 6","Groniu","KoS",721234,129841,111002,339,928,4,19,6,0,0,0,67,106,244,308,131,3.82,87],
+["Wataha Wilków 6","Mazi1027","KoS",639967,115882,97483,329,1024,11,21,0,6,0,11,77,106,272,351,135,4.21,84],
+["Wataha Wilków 6","Jedrek","KoS",591601,108408,130495,540,912,4,14,9,0,0,12,77,106,184,315,110,6.64,69],
+["Wataha Wilków 5","Marian","IE",665428,111315,110516,360,960,7,18,6,0,0,3,92,106,230,325,132,5.46,72],
+["Wataha Wilków 6","RoberoPL","IE",651953,76549,146861,449,976,8,11,8,0,0,6,61,106,176,345,186,5.79,32],
+["Wataha Wilków 5","Synek","IE",571602,107561,141086,660,1040,13,21,11,1,0,0,61,106,243,374,112,7.13,29]
+];
+const CENA={0:0,1:190,2:480,3:970,4:1560,5:2250,6:3140,7:4130,8:5630,9:7630,
+  10:10130,11:13130,12:17130,13:22130,14:28130,15:35130,16:43130,17:52130,18:62130};
+// realna odbieralność: wiejskie dojrzewają co 3 h (realnie ~18 h na dobę),
+// domowe i luksusowe co 6 h (~22,5 h). Kolejność zgodna z tablicą D.
+const ODB=[0.8475,0.8221,0.9293,0.7895,0.8886,0.7812,0.7742,0.8942,0.7917,0.7759,0.8289,0.8063,0.8333,0.8493,0.7812,0.8672,0.8272,0.8906,0.7812,0.8646,0.8934,0.7847,0.8365,0.8250,0.7725,0.8571,0.8571,0.9250,0.8162,0.8375,0.8438,0.7500,0.7604,0.8438,0.8229,0.8438,0.8063,0.8500,0.9141,0.8934,0.8304,0.8365,0.8705,0.8654,0.8250,0.8555,0.9375,0.8973,0.8021,0.7745,0.8672,0.8864,0.8438,0.8250,0.9375,0.8344,0.8382,0.7768,0.8382,0.7926,0.9219,0.8125,0.8750,0.8375,0.8571,0.8875,0.8750,0.7826,0.8510,0.7917,0.8051,0.8333,0.7941,0.8000,0.8229,0.7500,0.7500,0.8182,0.8077,0.7969,0.8625,0.8375,0.8170,0.9107,0.8750,0.7500,0.8125,0.7831,0.8798,0.8086,0.8250,0.7500,0.8438,0.9079,0.7594,0.8304,0.8304,0.8250,0.7969,0.8320,0.8281,0.7604,0.7604,0.9205,0.7875,0.8510,0.8375,0.8654,0.9087,0.8750,0.8500,0.9375,0.7500,0.8906,0.7895,0.7946,0.8036,0.8229,0.9375,0.7768];
+
+const NAZWY={EG:"Wczesna epoka gotycka",HMA:"Pełne średniowiecze",KoS:"Królestwo Sycylii",
+  IE:"Epoka iberyjska",FA:"Epoka feudalna",AoF:"Epoka Franków",BE:"Epoka bizantyjska",RE:"Cesarstwo Rzymskie"};
+const PORZADEK=["EG","HMA","KoS","IE","FA","AoF","BE","RE"];
+const P=["klub","nick","ep","pkt","jedz","zloto","towar","poj","zakupy",
+  "farmy","wN","wS","wP","puste","pAdm","pKosz","pFarm","pDom","pKult","kult","zmarn"];
+// siła robocza: [wolni pracownicy, wszyscy pracownicy] — kolejność zgodna z tablicą D
+const PRAC=[[4,123],[3,132],[8,142],[9,111],[1,99],[8,96],[16,124],[7,102],[7,89],[0,84],[6,92],[8,96],[2,95],[1,97],[6,94],[8,95],[0,99],[3,94],[8,96],[10,100],[6,86],[13,95],[7,99],[6,81],[1,99],[-1,98],[0,97],[5,108],[3,95],[5,92],[6,90],[2,86],[5,94],[3,94],[4,96],[2,94],[3,88],[9,100],[-1,97],[1,111],[-2,81],[6,86],[2,96],[2,77],[0,100],[2,99],[-1,97],[4,91],[1,95],[6,88],[0,93],[3,94],[16,86],[2,91],[2,95],[3,99],[2,95],[5,88],[1,81],[4,91],[9,100],[0,83],[3,97],[4,93],[9,97],[3,105],[5,87],[5,91],[-1,90],[11,90],[3,81],[0,76],[4,101],[0,101],[4,84],[2,89],[2,92],[1,69],[3,107],[1,92],[2,90],[1,78],[2,75],[0,97],[8,91],[0,89],[5,93],[5,88],[4,101],[4,81],[-1,89],[4,93],[7,96],[4,89],[2,92],[4,83],[6,84],[0,89],[4,94],[-1,89],[2,84],[12,85],[14,87],[3,83],[3,75],[9,84],[3,97],[3,92],[1,94],[1,99],[2,93],[0,89],[21,115],[2,77],[3,82],[4,89],[-1,83],[3,86],[5,89],[15,109]];
+// ile jedzenia wart jest jeden towar w danej epoce — wyliczone z kosztu pola:
+// warsztat zajmuje 12 pól, tyle samo co gospodarstwo wiejskie, i daje 60 towarów/h
+const KURS={EG:181,HMA:128,KoS:78,IE:75,FA:59,AoF:45,BE:23,RE:27};
+// złoto przez iskry: 84 000 złota = 170 iskier, 70 towarów = 95 isker
+// → 1 towar = 671 złota, więc złoto liczone kursem towaru podzielonym przez 671
+// budynki kupowane za diamenty: [farmy luksusowe, domy luksusowe, miejsca kultury luksusowe]
+const PREM={"Zaha98":[3,35,17],"BLACK ADAM":[3,62,14],"TRACZ52":[3,67,20],"Willow":[3,5,5],"Marty":[3,0,0],"Algmin":[3,2,0],"Milagros":[3,59,29],"MortusPL":[2,6,0],"lysy0806":[1,0,0],"G0RZK1":[3,1,0],"Argen":[3,2,2],"nowyM":[2,1,0],"itzDK":[3,1,0],"Cysia":[3,0,0],"lukasso87":[3,0,0],"Jamesgrucha":[3,0,0],"dzikus1000":[1,0,0],"Leoss":[3,6,3],"Pepsola":[2,0,0],"ALASLIT":[0,0,1],"Kozi":[3,0,0],"grzesio":[3,19,2],"Ludwik":[0,1,0],"Francesca":[0,1,0],"missU":[3,7,7],"Just Gru":[2,0,0],"Mike":[0,1,0],"Baszczu1906":[2,0,0],"mitras":[0,1,0],"Air Hawk":[0,0,1],"Visario":[3,0,0],"Damian":[2,0,3],"Juily":[3,2,0],"Jakubczyk":[1,2,0],"Hioo":[0,0,1],"Scarer":[0,1,0],"Aureliuss":[0,2,0],"Wulkix":[0,1,0],"Lordi":[3,1,0],"Aizdoow":[3,0,1],"M...":[3,1,0],"Candi":[0,2,0],"Thalion":[1,1,1],"Rutrr":[0,2,5],"Krzyś":[1,1,0],"KemezRP":[3,0,1],"Arfael88":[0,1,0],"Marian":[2,0,0],"RoberoPL":[0,3,2],"Synek":[3,21,14]};
+// ile pól zwykłej zabudowy trzeba, żeby dorównać jednemu budynkowi luksusowemu — minus jego własna powierzchnia
+// farma: 20 040/h z 9 pól, wiejska 940 na pole → równoważnik 21,3 pola, zysk 12,3
+// dom: 5 285/h z 6 pól, mały 547 na pole → równoważnik 9,7 pola, zysk 3,7
+// kultura: 6 pól, ponad dwa razy więcej zadowolenia niż średnia i szerszy zasięg → zysk 3
+const ZYSK_PREM=[12.3, 3.7, 3];
+const DARMOWE_EKSPANSJE=7;  // do ~4 000 diamentów da się uzbierać w samej grze
+const ZLOTO_ZA_TOWAR=671;
+const LIMIT_TOW=7000;   // ile towarów dziennie da się przepalić na iskry
+const LIMIT_ZL=8400000; // ile złota dziennie da się przepalić na iskry
+const lu=D.map((r,i)=>{const o=Object.fromEntries(P.map((k,j)=>[k,r[j]]));
+  o.odb=ODB[i]; o.wolni=PRAC[i][0]; o.ludzie=PRAC[i][1];
+  o.doba=Math.round(o.jedz*ODB[i]*24);          // realny zbiór jedzenia na dobę
+  o.towDoba=Math.round(o.towar*KURS[o.ep]*24);  // towary przeliczone na jedzenie
+  o.zlDoba=Math.round(o.zloto*24*KURS[o.ep]/ZLOTO_ZA_TOWAR); // złoto przez iskry na jedzenie
+  o.wynik=o.doba+o.towDoba+o.zlDoba;            // łączny zbiór dobowy w jedzeniu
+  o.limTow=Math.round(o.towar*24/LIMIT_TOW*100);  // ile procent dziennego limitu przepalania
+  o.limZl=Math.round(o.zloto*24/LIMIT_ZL*100);
+  // przewaga z diamentów, liczona w polach zwykłej zabudowy:
+  // pola dokupione ponad darmowy próg + nadwyżka luksusowych nad zwykłymi odpowiednikami
+  const lux=PREM[o.nick]||[0,0,0];
+  o.lux=lux;
+  o.polaEksp=Math.max(0,o.zakupy-DARMOWE_EKSPANSJE)*16;
+  o.zyskLux=Math.round(lux[0]*ZYSK_PREM[0]+lux[1]*ZYSK_PREM[1]+lux[2]*ZYSK_PREM[2]);
+  o.zaDiax=o.polaEksp+o.zyskLux;
+  o.udzial=Math.round(o.zaDiax/o.poj*100);
+  o.wlasne=Math.round(o.wynik*(1-o.zaDiax/o.poj));
+  return o;});
+const l=n=>n==null?"—":n.toLocaleString("pl-PL");
+const mediana=a=>{const s=[...a].sort((x,y)=>x-y);const m=s.length>>1;
+  return s.length%2?s[m]:Math.round((s[m-1]+s[m])/2)};
+
+PORZADEK.forEach(ep=>{
+  const w=lu.filter(g=>g.ep===ep); if(!w.length) return;
+  const mW=mediana(w.map(g=>g.wynik)), mD=mediana(w.map(g=>g.doba)), mT=mediana(w.map(g=>g.towar));
+  w.forEach(g=>{ g.medW=mW; g.medD=mD; g.medT=mT; });
+});
+
+function pasek(g){
+  const cz=[["--k-adm",g.pAdm],["--k-kosz",g.pKosz],["--k-wsz",g.wN*12],
+    ["--k-farm",g.pFarm],["--k-wszs",(g.wS+g.wP)*12],["--k-dom",g.pDom],["--k-kult",g.pKult]];
+  return `<div class="mapa" title="Zajęte ${g.poj-g.puste} z ${g.poj} pól">`+
+    cz.map(([k,v])=>`<b style="width:${(v/g.poj*100).toFixed(2)}%;background:var(${k})"></b>`).join("")+`</div>`;
+}
+const proc=(v,m,opis)=>{const o=Math.round((v/m-1)*100);
+  return `<td class="odch ${o>0?"plus":o<0?"minus":""}" title="${opis||""}">${o>0?"+":""}${o}%</td>`;};
+
+// gr: 0 = zawsze widoczna, 1 = produkcja, 2 = budowa miasta
+const KOLUMNY=[
+  {t:"Gracz",k:"nick",txt:1,gr:0},{t:"Sojusz",k:"klub",txt:1,gr:0},
+  {t:"Wynik dobowy",k:"wynik",gr:0},{t:"±",gr:0},{t:"Miasto",gr:0},
+  {t:"Jedzenie / h",k:"jedz",gr:1},{t:"Zbiór na dobę",k:"doba",gr:1},
+  {t:"Towary / h",k:"towar",gr:1},{t:"Towary w jedzeniu",k:"towDoba",gr:1},
+  {t:"Limit palenia",k:"limTow",gr:1},
+  {t:"Złoto / h",k:"zloto",gr:1},{t:"Złoto w jedzeniu",k:"zlDoba",gr:1},
+  {t:"Farmy",k:"farmy",gr:2},{t:"Warsztaty",k:"wN",gr:2},{t:"Pracownicy",k:"wolni",gr:2},
+  {t:"Kultura ×",k:"kult",gr:2},{t:"Puste",k:"puste",gr:2},{t:"Dokupione",k:"zakupy",gr:2},
+  {t:"Bez diamentów",k:"wlasne",gr:2}
+];
+const WIDOKI=[{t:"Wszystko",gr:null},{t:"Produkcja",gr:1},{t:"Budowa miasta",gr:2}];
+const mln=v=>(v/1e6).toFixed(2).replace(".",",");
+// ile kosztuje kolejna ekspansja premium — z różnicy w tabeli cen
+function nastepna(ile){
+  const teraz=CENA[ile], potem=CENA[ile+1];
+  if(teraz!==undefined && potem!==undefined) return l(potem-teraz)+" diamentów";
+  // między znanymi punktami rozkładamy różnicę po równo
+  const znane=Object.keys(CENA).map(Number).sort((a,b)=>a-b);
+  const przed=znane.filter(x=>x<=ile).pop(), za=znane.find(x=>x>ile);
+  if(przed===undefined||za===undefined) return "poza tabelą cen";
+  return "około "+l(Math.round((CENA[za]-CENA[przed])/(za-przed)))+" diamentów";
+}
+const kosz=document.getElementById("epoki");
+PORZADEK.forEach(ep=>{
+  const dane=lu.filter(g=>g.ep===ep);
+  if(!dane.length) return;
+  const maxD=Math.max(...dane.map(g=>g.doba)), maxTD=Math.max(...dane.map(g=>g.towDoba)),
+        maxW=Math.max(...dane.map(g=>g.wynik)), maxK=Math.max(...dane.map(g=>g.kult)),
+        maxJ=Math.max(...dane.map(g=>g.jedz)), maxWl=Math.max(...dane.map(g=>g.wlasne));
+  const stan={k:"wynik", kier:-1, gr:null};
+
+  const wiersz=g=>{
+    const norma=g.ep==="EG"?6:9, dia=CENA[g.zakupy];
+    return `<tr>
+      <td class="nick">${g.nick}</td>
+      <td class="klub">${g.klub}</td>
+      <td class="liczba slupek s-wynik" title="jedzenie ${mln(g.doba)} mln&#10;+ towary ${mln(g.towDoba)} mln&#10;+ złoto ${mln(g.zlDoba)} mln&#10;= ${mln(g.wynik)} mln na dobę"><i style="width:${(g.wynik/maxW*100).toFixed(1)}%;background:var(--wynik-tlo)"></i><span class="w">${mln(g.wynik)} mln</span></td>
+      ${proc(g.wynik,g.medW,"środek epoki "+mln(g.medW)+" mln")}
+      <td class="mapa-td">${pasek(g)}</td>
+      <td class="liczba slupek s-jedz" title="tyle pokazuje gra — zakłada odbieranie non stop&#10;realnie zbierasz ${mln(g.doba)} mln na dobę, nie ${mln(g.jedz*24)} mln"><i style="width:${(g.jedz/maxJ*100).toFixed(1)}%;background:var(--kult-tlo)"></i><span class="szary">${l(g.jedz)}</span></td>
+      <td class="liczba slupek s-jedz" title="${l(g.jedz)}/h × ${g.odb.toFixed(4).replace(".",",")} × 24 h = ${l(g.doba)}&#10;mnożnik ${g.odb.toFixed(2).replace(".",",")} bierze się z farm: wiejskie odbiera się 18 h na dobę, domowe 22,5 h&#10;czyli realnie ${Math.round(g.odb*24)} h zbierania"><i style="width:${(g.doba/maxD*100).toFixed(1)}%;background:var(--jedz-tlo)"></i><span class="j">${mln(g.doba)} mln</span></td>
+      <td class="liczba szary" title="${g.wN+g.wS+g.wP} warsztatów × 60 towarów/h = ${(g.wN+g.wS+g.wP)*60}&#10;faktycznie ${g.towar} — ${g.towar<(g.wN+g.wS+g.wP)*60?"część nie pracuje na pełnych obrotach":"komplet"}">${g.towar}</td>
+      <td class="liczba slupek s-towar" title="${g.towar}/h × ${KURS[g.ep]} jedzenia za towar × 24 h = ${l(g.towDoba)}&#10;kurs ${KURS[g.ep]} = ile jedzenia dałaby farma z 12 pól zajętych przez warsztat"><i style="width:${(g.towDoba/maxTD*100).toFixed(1)}%;background:var(--towar-tlo)"></i><span class="t">${mln(g.towDoba)} mln</span></td>
+      <td class="liczba szary" title="${g.towar}/h × 24 h = ${l(g.towar*24)} towarów na dobę&#10;limit przepalania na iskry: ${l(LIMIT_TOW)}&#10;${l(g.towar*24)} ÷ ${l(LIMIT_TOW)} = ${g.limTow}%">${g.limTow}%</td>
+      <td class="liczba szary" title="tyle pokazuje gra">${l(g.zloto)}</td>
+      <td class="liczba d" style="opacity:.85" title="${l(g.zloto)}/h × 24 h = ${l(g.zloto*24)} złota&#10;÷ 671 złota za towar = ${l(Math.round(g.zloto*24/ZLOTO_ZA_TOWAR))} towarów&#10;× ${KURS[g.ep]} jedzenia = ${l(g.zlDoba)}&#10;(671 z kursów iskier: 84 000 złota = 170 iskier, 70 towarów = 95 iskier)">${mln(g.zlDoba)} mln</td>
+      <td class="liczba" title="${g.farmy} gospodarstw zajmuje ${l(g.pFarm)} pól&#10;średnio ${l(Math.round(g.pFarm/g.farmy))} pól na sztukę&#10;dają ${l(g.jedz)} jedzenia/h, czyli ${l(Math.round(g.jedz/g.pFarm))} z jednego pola">${g.farmy}</td>
+      <td class="wsz" title="${g.wN} z bieżącej epoki (norma ${norma})&#10;${g.wS} do trzech epok wstecz&#10;${g.wP} pradawne&#10;razem ${g.wN+g.wS+g.wP} warsztatów, ${l((g.wN+g.wS+g.wP)*12)} pól"><b class="${g.wN>=norma?"norma-ok":"norma-zle"}" title="bieżąca epoka: ${g.wN} przy normie ${norma}">${g.wN}</b><em>·</em><s title="do trzech epok wstecz: ${g.wS}">${g.wS}</s><em>·</em><u title="pradawne: ${g.wP}">${g.wP}</u></td>
+      <td class="liczba ${g.wolni<0?"minus":"szary"}" title="miasto ma ${g.ludzie} pracowników&#10;${g.wolni<0?`brakuje ${-g.wolni} — tyle etatów stoi nieobsadzonych, więc budynki nie pracują`:`${g.wolni} wolnych, jest zapas na kolejne budynki`}">${
+        g.wolni<0?`<b style="font-weight:600">${g.wolni}</b> ⚠`:"+"+g.wolni}</td>
+      <td class="liczba slupek" style="min-width:56px" title="kultura obraca się ${g.kult.toFixed(2).replace(".",",")} raza&#10;czyli tyle razy ta sama kultura obsługuje kolejne budynki&#10;osiem to poziom mistrzowski, cztery — leży odłogiem"><i style="width:${(g.kult/maxK*100).toFixed(1)}%;background:var(--kult-tlo)"></i><span>${g.kult.toFixed(2).replace(".",",")}</span></td>
+      <td class="liczba ${g.puste===0?"norma-ok":g.puste>30?"minus":"szary"}" title="${l(g.poj)} pól pojemności − ${l(g.poj-g.puste)} zajętych = ${g.puste} wolnych&#10;${g.puste>=12?`zmieściłoby się tam ${Math.floor(g.puste/12)} gospodarstw wiejskich`:"na farmę potrzeba 12 pól"}">${g.puste===0?"0 ✓":g.puste}</td>
+      <td class="liczba" title="${g.zakupy?`${g.zakupy} zakupów po 16 kratek za łącznie ${l(dia)} diamentów`:"nic nie dokupione"}&#10;następne 16 pól: ${nastepna(g.zakupy)}">${g.zakupy?`${g.zakupy*16}<span class="szary" style="font-size:12px"> / ${l(dia)} 💎</span>`:"—"}</td>
+      <td class="liczba slupek s-wynik" title="${g.zaDiax?[
+        g.polaEksp?`${l(g.polaEksp)} pól z ekspansji ponad darmowy próg (${g.zakupy} zakupów, pierwsze ${DARMOWE_EKSPANSJE} nie liczone)`:"",
+        g.zyskLux?`${g.zyskLux} pól przewagi luksusowych: ${g.lux[0]} farm, ${g.lux[1]} domów, ${g.lux[2]} kultury`:"",
+        `razem ${l(g.zaDiax)} z ${l(g.poj)} pól, czyli ${g.udzial}% miasta`,
+        `${mln(g.wynik)} mln × ${(1-g.zaDiax/g.poj).toFixed(2).replace(".",",")} = ${mln(g.wlasne)} mln`
+      ].filter(Boolean).join("&#10;"):"nic ponad darmowy próg — cały wynik z gry"}"><i style="width:${(g.wlasne/maxWl*100).toFixed(1)}%;background:var(--kult-tlo)"></i><span class="${g.udzial>=25?"d":"szary"}">${mln(g.wlasne)} mln</span></td>
+    </tr>`;
+  };
+
+  const blok=document.createElement("div");
+  blok.className="epoka";
+  blok.innerHTML=`<div class="epoka-glowa"><h3>${NAZWY[ep]}</h3>
+      <em>${dane.length} graczy · środek epoki ${mln(dane[0].medW)} mln na dobę · 1 towar = ${KURS[ep]} jedzenia</em></div>
+    <div class="widoki">${WIDOKI.map((w,i)=>
+      `<button data-gr="${w.gr===null?"":w.gr}" aria-pressed="${i===0}">${w.t}</button>`).join("")}</div>
+    <div class="przewin"><table><thead><tr>${KOLUMNY.map(c=>
+      c.k?`<th data-k="${c.k}" tabindex="0" title="Kliknij, żeby posortować">${c.t}</th>`:`<th>${c.t}</th>`
+    ).join("")}</tr></thead><tbody></tbody></table></div>`;
+
+  const tb=blok.querySelector("tbody");
+  const naglowki=[...blok.querySelectorAll("th[data-k]")];
+  function rysuj(){
+    const posort=[...dane].sort((a,b)=>{
+      const x=a[stan.k], y=b[stan.k];
+      if(typeof x==="string") return stan.kier*x.localeCompare(y,"pl");
+      return stan.kier*(x-y);
+    });
+    tb.innerHTML=posort.map(wiersz).join("");
+    naglowki.forEach(th=>{
+      const akt=th.dataset.k===stan.k;
+      th.classList.toggle("akt",akt);
+      if(akt) th.dataset.kier = stan.kier<0?"dol":"gora"; else th.removeAttribute("data-kier");
+    });
+    zastosujWidok();
+  }
+  function zastosujWidok(){
+    const ukryte=KOLUMNY.map((c,i)=>(stan.gr!==null && c.gr!==0 && c.gr!==stan.gr)?i:-1).filter(i=>i>=0);
+    blok.querySelectorAll("tr").forEach(tr=>{
+      [...tr.children].forEach((kom,i)=>{ kom.hidden=ukryte.includes(i); });
+    });
+  }
+  function przelacz(th){
+    const k=th.dataset.k;
+    if(stan.k===k) stan.kier*=-1;
+    else { stan.k=k; stan.kier=KOLUMNY.find(c=>c.k===k).txt?1:-1; }
+    rysuj();
+  }
+  naglowki.forEach(th=>{
+    th.addEventListener("click",()=>przelacz(th));
+    th.addEventListener("keydown",e=>{ if(e.key==="Enter"||e.key===" "){e.preventDefault(); przelacz(th);} });
+  });
+  const paskiWidoku=blok.querySelector(".widoki");
+  paskiWidoku.addEventListener("click",e=>{
+    const b=e.target.closest("button"); if(!b) return;
+    stan.gr = b.dataset.gr==="" ? null : +b.dataset.gr;
+    [...paskiWidoku.children].forEach(x=>x.setAttribute("aria-pressed", x===b));
+    zastosujWidok();
+  });
+  rysuj();
+  kosz.appendChild(blok);
+});
+
+const SOJUSZE=["Wataha Wilków","Wataha Wilków 2","Wataha Wilków 3",
+  "Wataha Wilków 4","Wataha Wilków 5","Wataha Wilków 6"];
+const NAJWIEKSZA=Math.max(...lu.map(g=>g.puste));
+document.getElementById("dziury").innerHTML=SOJUSZE.map(s=>{
+  const wszyscy=lu.filter(g=>g.klub===s);
+  const dziurawi=wszyscy.filter(g=>g.puste>30).sort((a,b)=>b.puste-a.puste);
+  const strata=wszyscy.reduce((sum,g)=>sum+g.puste,0);
+  const zera=wszyscy.filter(g=>g.puste===0).length;
+  return `<div class="zalegli">
+    <div class="grupa-glowa"><h3>${s}</h3><span class="suma">${l(strata)} pól</span></div>
+    <p class="grupa-podpis"><b>${dziurawi.length}</b> z ${wszyscy.length} z dziurą ponad 30 pól · <b>${zera}</b> zapchanych do zera</p>
+    ${dziurawi.length
+      ? `<ul class="dziury-lista">${dziurawi.map(g=>`<li>
+          <span class="kto">${g.nick}</span>
+          <span class="tor"><b style="width:${(g.puste/NAJWIEKSZA*100).toFixed(1)}%"></b></span>
+          <span class="ile">${g.puste} <em>≈ ${Math.floor(g.puste/12)} farm</em></span>
+        </li>`).join("")}</ul>`
+      : `<p class="czysto">Nikt nie ma dziury większej niż 30 pól.</p>`}
+  </div>`;
+}).join("");
+
+const braki=lu.filter(g=>g.wolni<0).sort((a,b)=>a.wolni-b.wolni);
+document.getElementById("m-prac").textContent=braki.length;
+document.getElementById("alarm").innerHTML = braki.length
+  ? `<table style="min-width:520px"><thead><tr>
+      <th>Gracz</th><th>Sojusz</th><th>Epoka</th><th>Brakuje ludzi</th><th>Miasto na</th>
+    </tr></thead><tbody>${braki.map(g=>`<tr>
+      <td class="nick">${g.nick}</td>
+      <td class="klub">${g.klub}</td>
+      <td class="klub">${NAZWY[g.ep]}</td>
+      <td class="liczba minus" style="font-weight:600">${g.wolni} ⚠</td>
+      <td class="liczba szary">${g.ludzie} pracowników</td>
+    </tr>`).join("")}</tbody></table>`
+  : `<p class="pusto">Nikomu nie brakuje pracowników.</p>`;
+
+document.getElementById("m-zero").textContent=lu.filter(g=>g.puste===0).length;
+document.getElementById("m-dziury").textContent=lu.filter(g=>g.puste>50).length;
+document.getElementById("m-strata").textContent=l(lu.reduce((s,g)=>s+g.puste,0));
+</script>
